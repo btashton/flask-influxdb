@@ -1,7 +1,7 @@
 """
 Flask-SQLite3
 """
-from setuptools import setuptools
+from setuptools import setup
 
 setup(
     name='Flask-InfluxDB',

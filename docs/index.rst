@@ -6,8 +6,6 @@ Flask-InfluxDB
 Installation
 ------------
 
-**Note this is not on pip yet**
-
 Install the extension via pip::
 
     $ pip install Flask-InfluxDB

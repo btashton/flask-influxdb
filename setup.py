@@ -1,5 +1,5 @@
 """
-Flask-SQLite3
+Flask-InfluxDB
 """
 from setuptools import setup
 

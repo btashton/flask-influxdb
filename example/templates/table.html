@@ -1,0 +1,23 @@
+<html>
+<head>
+	<title>Table</title>
+</head>
+<body>
+<h1>{{data.name}}</h1>
+<table>
+  <tr>
+  {% for heading in data.columns %}
+    <th>{{ heading }}</th>
+  {% endfor %}
+  </tr>
+{% for row in data.points %}
+  <tr>
+  {% set rowloop = loop %}
+  {% for cell in row %}
+    <td id="cell-{{ rowloop.index }}-{{ loop.index }}>{{ cell }}</td>
+  {% endfor %}
+  </tr>
+{% endfor %}
+</table>
+</body>
+</html>

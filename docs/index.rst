@@ -30,8 +30,10 @@ Delayed configuration of ``InfluxDB`` is also support using **init_app** method:
     app = Flask(__name__)
     influxdb.init_app(app)
 
-Currently the ``InfluxDB`` instance provides the functionality of
-``InfluxDBClient`` but may later extend this class
+Currently the ``InfluxDB.connection`` instance provides the functionality of
+``InfluxDBClient`` . InfluxDB may later provide better wrappers to extend this class.
+
+An included examples shows how a database can be created and data written and queried.
 
 
 Configuring Flask-InfluxDB

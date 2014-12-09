@@ -2,7 +2,7 @@
 .*.swp
 .tox
 docs/_build/*
-Flask_Cache.egg-info/*
+Flask_InfluxDB.egg-info/*
 build/*
 dist/
 venv/

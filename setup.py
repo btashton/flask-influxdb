@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name='Flask-InfluxDB',
-    version='0.1',
+    version='0.2',
     url='http://github.com/ombitron/flask-influxdb',
     license='BSD',
     author='Brennan Ashton',

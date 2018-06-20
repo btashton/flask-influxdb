@@ -13,7 +13,7 @@ Install the extension via pip::
 Set Up
 ------
 
-Influxdb is accessed via ``InfluxDB``::
+Influxdb can be accessed via ``InfluxDB`` class::
 
     from flask import Flask
     from flask_influxdb import InfluxDB
@@ -21,23 +21,21 @@ Influxdb is accessed via ``InfluxDB``::
     app = Flask(__name__)
     influx_db = InfluxDB(app=app)
 
-Delayed configuration of ``InfluxDB`` is also support using **init_app** method::
+Delayed configuration of ``InfluxDB`` is also supported using the **init_app** method::
 
     influx_db = Influxdb()
 
     app = Flask(__name__)
     influxdb.init_app(app=app)
 
-Currently the ``InfluxDB.connection`` instance provides the functionality of
-``InfluxDBClient`` . InfluxDB may later provide better wrappers to extend this class.
+Currently the ``InfluxDB.connection`` instance provides the functionality of ``InfluxDBClient`` . InfluxDB may provide better wrappers to extend this class.
 
-An included examples shows how a database can be created and data written and queried.
-
+An included example shows how a database can be created and how data can be written and queried.
 
 Configuring Flask-InfluxDB
 --------------------------
 
-The following configuration values exist for Flask-InfluxDB:
+The following configuration values can be set for Flask-InfluxDB extension:
 
 .. tabularcolumns:: |p{6.5cm|p{8.5cm}|
 
@@ -68,5 +66,4 @@ The following configuration values exist for Flask-InfluxDB:
 ``INFLUXDB_PROXIES``            HTTP(S) proxy to use for Requests. Defaults to None.
 
 ``INFLUXDB_POOL_SIZE``          urllib3 connection pool size. Defaults to 10.
-
 =============================== ==================================================================

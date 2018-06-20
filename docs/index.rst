@@ -1,7 +1,7 @@
 Flask-InfluxDB
 ==========================================
 
-.. module:: flask.ext.influxdb
+.. module:: flask_influxdb
 
 Installation
 ------------
@@ -16,17 +16,17 @@ Set Up
 Influxdb is accessed via ``InfluxDB``::
 
     from flask import Flask
-    from flask.ext.influxdb import InfluxDB
+    from flask_influxdb import InfluxDB
 
     app = Flask(__name__)
-    influx_db = InfluxDB(app)
+    influx_db = InfluxDB(app=app)
 
 Delayed configuration of ``InfluxDB`` is also support using **init_app** method::
 
     influx_db = Influxdb()
 
     app = Flask(__name__)
-    influxdb.init_app(app)
+    influxdb.init_app(app=app)
 
 Currently the ``InfluxDB.connection`` instance provides the functionality of
 ``InfluxDBClient`` . InfluxDB may later provide better wrappers to extend this class.
@@ -56,10 +56,17 @@ The following configuration values exist for Flask-InfluxDB:
 
 ``INFLUXDB_VERIFY_SSL``         Enables checking HTTPS certificate. Defaults to False.
 
+``INFLUXDB_RETRIES``            Number of retries your client will try before aborting, 0 indicates try until success.
+                                Defaults to 3
+
 ``INFLUXDB_TIMEOUT``            Sets request timeout. Defaults to None.
 
 ``INFLUXDB_USE_UDP``            Use the UDP interfaces instead of http. Defaults to False.
 
 ``INFLUXDB_UDP_PORT``           UDP api port number. Defaults to 4444.
+
+``INFLUXDB_PROXIES``            HTTP(S) proxy to use for Requests. Defaults to None.
+
+``INFLUXDB_POOL_SIZE``          urllib3 connection pool size. Defaults to 10.
 
 =============================== ==================================================================

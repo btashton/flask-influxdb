@@ -33,7 +33,7 @@ class InfluxDB(object):
         app.config.setdefault('INFLUXDB_RETRIES', 3)
         app.config.setdefault('INFLUXDB_TIMEOUT', None)
         app.config.setdefault('INFLUXDB_USE_UDP', False)
-        app.config.setdefault('INFLUXDB_UDP_PORT', 4444)
+        app.config.setdefault('INFLUXDB_UDP_PORT', None)
         app.config.setdefault('INFLUXDB_PROXIES', None)
         app.config.setdefault('INFLUXDB_POOL_SIZE', 10)
 

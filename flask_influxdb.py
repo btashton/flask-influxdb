@@ -1,14 +1,10 @@
 import influxdb
-from flask import current_app
-
-try:
-    from flask import _app_ctx_stack as stack
-except ImportError:
-    from flask import _request_ctx_stack as stack
+from flask import current_app, _app_ctx_stack, Flask
+from flask.globals import _app_ctx_err_msg
 
 
 class InfluxDB(object):
-    def __init__(self, app=None):
+    def __init__(self, app: Flask = None) -> None:
         """
         Class constructor
         :param app: Flask Application object
@@ -17,7 +13,7 @@ class InfluxDB(object):
         if app is not None:
             self.init_app(app)
 
-    def init_app(self, app):
+    def init_app(self, app: Flask) -> None:
         """
         Initialize extension for application
         :param app: Flask Application object
@@ -37,12 +33,10 @@ class InfluxDB(object):
         app.config.setdefault('INFLUXDB_PROXIES', None)
         app.config.setdefault('INFLUXDB_POOL_SIZE', 10)
 
-        if hasattr(app, 'teardown_appcontext'):
-            app.teardown_appcontext(self.teardown)
-        else:
-            app.teardown_request(self.teardown)
+        app.teardown_appcontext(self.teardown)
 
-    def connect(self):
+    @staticmethod
+    def connect() -> influxdb.InfluxDBClient:
         """
         Connect to InfluxDB using configuration parameters
         :return: InfluxDBClient object
@@ -63,21 +57,36 @@ class InfluxDB(object):
             pool_size=current_app.config['INFLUXDB_POOL_SIZE']
         )
 
-    def teardown(self, exception):
+    def teardown(self, exception) -> None:
         """This is really a sub in case a influxdb input actually does need
         to be able to be torn down"""
-        ctx = stack.top
+        ctx = _app_ctx_stack.top
         if hasattr(ctx, 'influxdb_db'):
-            ctx.influxdb_db = None
+            ctx.influxdb_db.close()
 
     @property
-    def connection(self):
+    def connection(self) -> influxdb.InfluxDBClient:
         """
         InfluxDBClient object
         :return:
         """
-        ctx = stack.top
-        if ctx is not None:
-            if not hasattr(ctx, 'influxdb_db'):
-                ctx.influxdb_db = self.connect()
-            return ctx.influxdb_db
+        ctx = _app_ctx_stack.top
+        if ctx is None:
+            raise RuntimeError(_app_ctx_err_msg)
+
+        if not hasattr(ctx, 'influxdb_db'):
+            ctx.influxdb_db = self.connect()
+
+        return ctx.influxdb_db
+
+    @property
+    def query(self) -> callable:
+        return self.connection.query
+
+    @property
+    def write(self) -> callable:
+        return self.connection.write
+
+    @property
+    def write_points(self) -> callable:
+        return self.connection.write_points

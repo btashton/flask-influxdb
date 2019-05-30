@@ -28,7 +28,7 @@ influx_db = InfluxDB()
 app = Flask(__name__)
 influxdb.init_app(app=app)
 ```
-This allows to use InfluxDB with Flask app factory pattern (check examples).
+This allows to use `InfluxDB` with Flask app factory pattern (check examples).
 
 The `InfluxDB.connection` instance provides the functionality of
 `InfluxDBClient`. Additionally there is a simple API to `InfluxDBClient`:

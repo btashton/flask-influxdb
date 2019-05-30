@@ -112,7 +112,7 @@ class InfluxDB(object):
         return self.connection.write_points
 
     @property
-    def database(self) -> object:
+    def database(self):
         class Database:
             switch = self.connection.switch_database
             create = self.connection.create_database

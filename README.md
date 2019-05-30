@@ -5,7 +5,7 @@ Extension to add InfluxDB support to Flask framework [(external documentation)](
 ## Installation
 Install the extension via *pip*:
 
-```python
+```sh
 $ pip install Flask-InfluxDB
 ```
 
@@ -28,9 +28,33 @@ influx_db = InfluxDB()
 app = Flask(__name__)
 influxdb.init_app(app=app)
 ```
+This allows to use InfluxDB with Flask app factory pattern (check examples).
 
-The ``InfluxDB.connection`` instance provides the functionality of
-``InfluxDBClient``. ``InfluxDB`` may provide better wrappers to extend this class.
+The `InfluxDB.connection` instance provides the functionality of
+`InfluxDBClient`. Additionally there is a simple API to `InfluxDBClient`:
+```python
+influx = InfluxDB()
+
+influx.query()                      # InfluxDBClient.query()
+influx.write()                      # InfluxDBClient.write()
+influx.write_points()               # InfluxDBClient.write_points()
+
+influx.user.create()                # InfluxDBClient.create_user()
+influx.user.drop()                  # InfluxDBClient.drop_user()
+influx.user.switch()                # InfluxDBClient.switch_user()
+influx.user.all()                   # InfluxDBClient.get_list_users()
+
+influx.database.drop()              # InfluxDBClient.drop_database()
+influx.database.switch()            # InfluxDBClient.switch_database()
+influx.database.create()            # InfluxDBClient.create_database()
+influx.database.all()               # InfluxDBClient.get_list_database()
+
+influx.measurement.drop()           # InfluxDBClient.drop_measurement()
+influx.measurement.all()            # InfluxDBClient.get_list_measurements()
+influx.measurement.tag_values()     # Returns tag values for a given key
+influx.measurement.tag_keys()       # Returns tag keys in a measurement
+
+```
 
 An included example demonstrates how a database can be created and how data can be written and queried.
 

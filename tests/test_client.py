@@ -44,7 +44,6 @@ class TestAPI:
             assert hasattr(influx, 'write_points')
             assert hasattr(influx, 'database')
             assert hasattr(influx, 'user')
-            assert hasattr(influx, 'tag')
             assert hasattr(influx, 'write')
             assert hasattr(influx, 'policy')
             assert hasattr(influx, 'measurement')
@@ -60,6 +59,8 @@ class TestAPI:
         with app.ctx:
             assert hasattr(influx.measurement, 'drop')
             assert hasattr(influx.measurement, 'all')
+            assert hasattr(influx.measurement, 'tag_values')
+            assert hasattr(influx.measurement, 'tag_keys')
 
     def test_user(self, app, influx):
         with app.ctx:
@@ -75,11 +76,6 @@ class TestAPI:
             assert hasattr(influx.policy, 'drop')
             assert hasattr(influx.policy, 'alter')
             assert hasattr(influx.policy, 'all')
-
-    def test_tag(self, app, influx):
-        with app.ctx:
-            assert hasattr(influx.tag, 'values')
-            assert hasattr(influx.tag, 'keys')
 
 
 class TestTags:
@@ -100,7 +96,7 @@ class TestTags:
 
         with app.ctx:
             influx.write_points(points)
-            result = influx.tag.values(measurement=measurement, key='info')
+            result = influx.measurement.tag_values(measurement=measurement, key='info')
 
         assert isinstance(result, types.GeneratorType)
 
@@ -126,7 +122,7 @@ class TestTags:
 
         with app.ctx:
             influx.write_points(points)
-            result = influx.tag.keys(measurement=measurement)
+            result = influx.measurement.tag_keys(measurement=measurement)
 
         assert isinstance(result, types.GeneratorType)
         assert list(result) == ['info']

@@ -145,18 +145,12 @@ class InfluxDB(object):
     @property
     def measurement(self):
         class Measurement:
+            tag_values = self._tag_values
+            tag_keys = self._tag_keys
             drop = self.connection.drop_measurement
             all = self.connection.get_list_measurements
 
         return Measurement()
-
-    @property
-    def tag(self):
-        class Tag:
-            values = self._tag_values
-            keys = self._tag_keys
-
-        return Tag()
 
     def _tag_values(self,
                     measurement: str,

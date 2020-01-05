@@ -8,9 +8,8 @@ influx_db = InfluxDB(app=app)
 
 @app.route('/newdb/<dbname>')
 def newdb(dbname):
-    dbcon = influx_db.connection
-    dbcon.create_database(dbname)
-    return ''
+    influx_db.database.create(dbname)
+    return 'Database {} created'.format(dbname)
 
 
 @app.route('/write/<dbname>')
@@ -18,9 +17,8 @@ def write(dbname):
     data_measurement = 'testseries'
     data_tags = ['time', 'value_1', 'value_2', 'value_3']
 
-    dbcon = influx_db.connection
-    dbcon.switch_database(database=dbname)
-    dbcon.write_points([
+    influx_db.database.switch(database=dbname)
+    influx_db.write_points([
         {
             "fields": {
                 'value_1': 0.5,
@@ -28,13 +26,13 @@ def write(dbname):
                 'value_3': 1.8858
             },
             "tags": {
-                'tag_1': 'tag_string',
-                'tag_2': 'tag_string'
+                'tag_1': 'tag_string1',
+                'tag_2': 'tag_string2'
             },
             "measurement": "testseries"
         }
     ])
-    tabledata = dbcon.query('SELECT {0} from {1}'.format(', '.join(data_tags), data_measurement))
+    tabledata = influx_db.query('SELECT {0} from {1}'.format(', '.join(data_tags), data_measurement))
 
     data_points = []
     for measurement, tags in tabledata.keys():

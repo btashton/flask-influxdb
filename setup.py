@@ -18,7 +18,7 @@ setup(
     platforms='any',
     install_requires=[
         'Flask',
-        'influxdb==5.0.0',
+        'influxdb==5.2.2',
     ],
     classifiers=[
         'Environment :: Web Environment',

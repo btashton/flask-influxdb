@@ -6,3 +6,4 @@ Flask_InfluxDB.egg-info/*
 build/*
 dist/
 venv/
+Pipfile

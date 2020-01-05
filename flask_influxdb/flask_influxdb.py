@@ -26,24 +26,24 @@ class InfluxDB(object):
         :param app: Flask Application object
         :return:
         """
-        app.config.setdefault('INFLUXDB_HOST', 'localhost')
-        app.config.setdefault('INFLUXDB_PORT', '8086')
-        app.config.setdefault('INFLUXDB_USER', 'root')
-        app.config.setdefault('INFLUXDB_PASSWORD', 'root')
-        app.config.setdefault('INFLUXDB_DATABASE', None)
-        app.config.setdefault('INFLUXDB_SSL', False)
-        app.config.setdefault('INFLUXDB_VERIFY_SSL', False)
-        app.config.setdefault('INFLUXDB_RETRIES', 3)
-        app.config.setdefault('INFLUXDB_TIMEOUT', None)
-        app.config.setdefault('INFLUXDB_USE_UDP', False)
-        app.config.setdefault('INFLUXDB_UDP_PORT', 4444)
-        app.config.setdefault('INFLUXDB_PROXIES', None)
-        app.config.setdefault('INFLUXDB_POOL_SIZE', 10)
+        app.config.setdefault("INFLUXDB_HOST", "localhost")
+        app.config.setdefault("INFLUXDB_PORT", "8086")
+        app.config.setdefault("INFLUXDB_USER", "root")
+        app.config.setdefault("INFLUXDB_PASSWORD", "root")
+        app.config.setdefault("INFLUXDB_DATABASE", None)
+        app.config.setdefault("INFLUXDB_SSL", False)
+        app.config.setdefault("INFLUXDB_VERIFY_SSL", False)
+        app.config.setdefault("INFLUXDB_RETRIES", 3)
+        app.config.setdefault("INFLUXDB_TIMEOUT", None)
+        app.config.setdefault("INFLUXDB_USE_UDP", False)
+        app.config.setdefault("INFLUXDB_UDP_PORT", 4444)
+        app.config.setdefault("INFLUXDB_PROXIES", None)
+        app.config.setdefault("INFLUXDB_POOL_SIZE", 10)
 
         app.teardown_appcontext(self.teardown)
 
         with app.app_context():
-            database = app.config['INFLUXDB_DATABASE']
+            database = app.config["INFLUXDB_DATABASE"]
             if database is not None:
                 self.database.create(database)
 
@@ -54,19 +54,19 @@ class InfluxDB(object):
         :return: InfluxDBClient object
         """
         return influxdb.InfluxDBClient(
-            host=current_app.config['INFLUXDB_HOST'],
-            port=current_app.config['INFLUXDB_PORT'],
-            username=current_app.config['INFLUXDB_USER'],
-            password=current_app.config['INFLUXDB_PASSWORD'],
-            database=current_app.config['INFLUXDB_DATABASE'],
-            ssl=current_app.config['INFLUXDB_SSL'],
-            verify_ssl=current_app.config['INFLUXDB_VERIFY_SSL'],
-            timeout=current_app.config['INFLUXDB_TIMEOUT'],
-            retries=current_app.config['INFLUXDB_RETRIES'],
-            use_udp=current_app.config['INFLUXDB_USE_UDP'],
-            udp_port=current_app.config['INFLUXDB_UDP_PORT'],
-            proxies=current_app.config['INFLUXDB_PROXIES'],
-            pool_size=current_app.config['INFLUXDB_POOL_SIZE']
+            host=current_app.config["INFLUXDB_HOST"],
+            port=current_app.config["INFLUXDB_PORT"],
+            username=current_app.config["INFLUXDB_USER"],
+            password=current_app.config["INFLUXDB_PASSWORD"],
+            database=current_app.config["INFLUXDB_DATABASE"],
+            ssl=current_app.config["INFLUXDB_SSL"],
+            verify_ssl=current_app.config["INFLUXDB_VERIFY_SSL"],
+            timeout=current_app.config["INFLUXDB_TIMEOUT"],
+            retries=current_app.config["INFLUXDB_RETRIES"],
+            use_udp=current_app.config["INFLUXDB_USE_UDP"],
+            udp_port=current_app.config["INFLUXDB_UDP_PORT"],
+            proxies=current_app.config["INFLUXDB_PROXIES"],
+            pool_size=current_app.config["INFLUXDB_POOL_SIZE"],
         )
 
     @staticmethod
@@ -76,7 +76,7 @@ class InfluxDB(object):
         to be able to be torn down
         """
         ctx = _app_ctx_stack.top
-        if hasattr(ctx, 'influxdb_db') and ctx.influxdb_db is not None:
+        if hasattr(ctx, "influxdb_db") and ctx.influxdb_db is not None:
             ctx.influxdb_db.close()
 
     @property
@@ -89,7 +89,7 @@ class InfluxDB(object):
         if ctx is None:
             raise RuntimeError(_app_ctx_err_msg)
 
-        if not hasattr(ctx, 'influxdb_db'):
+        if not hasattr(ctx, "influxdb_db"):
             ctx.influxdb_db = self.connect()
 
         if ctx.influxdb_db is None:
@@ -154,10 +154,7 @@ class InfluxDB(object):
 
         return Measurement()
 
-    def _tag_values(self,
-                    measurement: str,
-                    key: str,
-                    *args, **kwargs) -> Generator:
+    def _tag_values(self, measurement: str, key: str, *args, **kwargs) -> Generator:
         """
         Returns generator with tag's values for measurement.
         :param measurement: name of the measurement
@@ -167,19 +164,17 @@ class InfluxDB(object):
         conn = self.connection
         q = f"SHOW TAG VALUES ON {conn._database} FROM {measurement} WITH KEY = {key}"
         result = conn.query(query=q, *args, **kwargs)
-        values = (p['value'] for p in result.get_points())
+        values = (p["value"] for p in result.get_points())
         return values
 
-    def _tag_keys(self,
-                  measurement: str,
-                  *args, **kwargs) -> Generator:
+    def _tag_keys(self, measurement: str, *args, **kwargs) -> Generator:
         """
         Returns generator with tag's keys for measurement.
         :param measurement: name of the measurement
         :return:
         """
         conn = self.connection
-        q = f'SHOW TAG KEYS ON {conn._database} FROM {measurement}'
+        q = f"SHOW TAG KEYS ON {conn._database} FROM {measurement}"
         result = conn.query(query=q, *args, **kwargs)
-        keys = (p['tagKey'] for p in result.get_points())
+        keys = (p["tagKey"] for p in result.get_points())
         return keys

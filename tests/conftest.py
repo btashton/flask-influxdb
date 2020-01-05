@@ -5,7 +5,7 @@ from flask import Flask, jsonify
 from flask_influxdb import InfluxDB
 
 
-App = namedtuple('App', ['ctx', 'client'])
+App = namedtuple("App", ["ctx", "client"])
 
 influx_db = InfluxDB()
 
@@ -16,19 +16,17 @@ def create_app(config: str) -> Flask:
 
     influx_db.init_app(app)
 
-    @app.route('/add/<measurement>/<idx>')
+    @app.route("/add/<measurement>/<idx>")
     def write(measurement: str, idx: int):
-        result = influx_db.write_points([
-            {
-                "fields": {
-                    'index': idx,
-                },
-                "tags": {
-                    'info': 'test',
-                },
-                "measurement": measurement
-            }
-        ])
+        result = influx_db.write_points(
+            [
+                {
+                    "fields": {"index": idx,},
+                    "tags": {"info": "test",},
+                    "measurement": measurement,
+                }
+            ]
+        )
 
         return jsonify(result=result)
 
@@ -44,7 +42,7 @@ def influx():
 def app(request):
     """Session-wide test application."""
     rel_dir = os.path.dirname(__file__)
-    config = os.path.join(rel_dir, 'config.cfg')
+    config = os.path.join(rel_dir, "config.cfg")
 
     # Create app
     app = create_app(config)
@@ -56,14 +54,14 @@ def app(request):
 
     # Cleanup
     with ctx:
-        influx_db.database.drop('test')
+        influx_db.database.drop("test")
 
 
 @pytest.fixture()
 def app_no_cleanup(request):
     """Session-wide test application."""
     rel_dir = os.path.dirname(__file__)
-    config = os.path.join(rel_dir, 'config.cfg')
+    config = os.path.join(rel_dir, "config.cfg")
 
     # Create app
     app = create_app(config)

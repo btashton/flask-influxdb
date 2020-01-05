@@ -43,7 +43,9 @@ class InfluxDB(object):
         app.teardown_appcontext(self.teardown)
 
         with app.app_context():
-            self.database.create(app.config['INFLUXDB_DATABASE'])
+            database = app.config['INFLUXDB_DATABASE']
+            if database is not None:
+                self.database.create(database)
 
     @staticmethod
     def connect() -> influxdb.InfluxDBClient:

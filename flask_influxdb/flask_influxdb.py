@@ -39,12 +39,14 @@ class InfluxDB(object):
         app.config.setdefault("INFLUXDB_UDP_PORT", 4444)
         app.config.setdefault("INFLUXDB_PROXIES", None)
         app.config.setdefault("INFLUXDB_POOL_SIZE", 10)
+        app.config.setdefault("INFLUXDB_CREATE_DATABASE", True)
 
         app.teardown_appcontext(self.teardown)
 
         with app.app_context():
             database = app.config["INFLUXDB_DATABASE"]
-            if database is not None:
+            create_database = app.config["INFLUXDB_CREATE_DATABASE"]
+            if database is not None and create_database:
                 self.database.create(database)
 
     @staticmethod

@@ -5,7 +5,7 @@ from setuptools import setup
 
 setup(
     name="Flask-InfluxDB",
-    version="0.3.1",
+    version="0.3.2",
     url="http://github.com/btashton/flask-influxdb",
     license="BSD",
     author="Brennan Ashton",
@@ -16,7 +16,7 @@ setup(
     zip_safe=False,
     include_package_data=True,
     platforms="any",
-    install_requires=["Flask", "influxdb==5.2.2",],
+    install_requires=["Flask", "influxdb>=5.2.0",],
     classifiers=[
         "Environment :: Web Environment",
         "Intended Audience :: Developers",

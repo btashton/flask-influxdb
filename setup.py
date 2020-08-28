@@ -16,7 +16,10 @@ setup(
     zip_safe=False,
     include_package_data=True,
     platforms="any",
-    install_requires=["Flask", "influxdb>=5.2.0",],
+    install_requires=[
+        "Flask",
+        "influxdb>=5.2.0",
+    ],
     classifiers=[
         "Environment :: Web Environment",
         "Intended Audience :: Developers",

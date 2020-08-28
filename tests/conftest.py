@@ -21,8 +21,12 @@ def create_app(config: str) -> Flask:
         result = influx_db.write_points(
             [
                 {
-                    "fields": {"index": idx,},
-                    "tags": {"info": "test",},
+                    "fields": {
+                        "index": idx,
+                    },
+                    "tags": {
+                        "info": "test",
+                    },
                     "measurement": measurement,
                 }
             ]
